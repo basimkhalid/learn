@@ -1,0 +1,40 @@
+#sbutton {
+    align-self: center;
+    position: relative;
+}
+
+.container {
+    display:flex;
+    justify-content: center;
+    min-height: 100vh;
+    align-items: center;
+}
+.buttoncontainer {
+    display:flex;
+    justify-content: center;
+    min-height: 10vh;
+    align-items: center;
+}
+.searchform {
+    display:flex;
+    min-width: 500px;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 500px) {
+        .searchform {
+            width:300px;
+        }
+    }
+.btn {
+    margin: 10px;
+}
+.btn:hover {
+    
+    border: 1px solid #d0d0d0;
+} 
+
+.navbar-nav { 
+    margin-left: auto; 
+} 
+
