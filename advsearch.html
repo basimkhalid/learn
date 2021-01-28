@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Image Search</title>
+        <title>Advanced Google Search</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -23,19 +24,54 @@
                 </li> 
             </ul> 
         </nav> 
-
-        <div class="container-fluid container">
-                <form class="col-xs-4 col-md-8" action="https://google.com/search">
-                    <div class="col-xs-4 col-md-12">
-                        <input id="exampleInputEmail1" placeholder="Enter the search query" class="col-xs-4 col-md-8 form-control-lg form-control searchform" type="text" name="q">
-                    </div>
-                    <div class="buttoncontainer col-xs-8 col-md-12">
-                        <input id="sbutton" class="btn btn-light" type="submit" value="Google Search">
-                        <input id="lbutton" class="btn btn-light" type="submit" value="I'm Feeling Lucky">
-                    </div>
-                </form>
-
+        <div class="item item-bigtext adv-title">
+          <div>
+          <h3 style="color:rgb(212, 74, 49); font-size: 20px;">Advanced Search</h3>
+          </div>
         </div>
+
+        
+        <div class="newcontainer">
+        <form action="https://google.com/search">
+          <div class="item item-bigtext" >Find pages with ...</div>
+
+          <div class="label-w">
+            <label for="all these words">all these words:</label>
+          </div>
+          <div class="input-w">
+            <input class="form-control" name="as_q"  />
+          </div>
+
+          <div class="label-w">
+            <label for="this exact word or phrase:">this exact word or phrase:</label>
+          </div>
+          <div class="input-w">
+            <input class="form-control" name="as_epq"  />
+          </div>
+
+          <div class="label-w">
+            <label for="any of these words:">any of these words:</label>
+          </div>
+          <div class="input-w">
+            <input class="form-control" name="as_oq"  />
+          </div>
+
+          <div class="label-w">
+            <label for="none of these words:">none of these words:</label>
+          </div>
+          <div class="input-w">
+            <input class="form-control" name="as_eq"  />
+          </div>
+
+          <div class= "btm adv-button">
+            <button type="submit" class="btn btn-primary ">Advanced Search</button>   
+          </div>
+
+        </form>
+
+        </div> <!-- .container -->
+        
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     </body>
 </html>
