@@ -31,3 +31,10 @@ def addpage(request):
         "form":NewEntryForm()
     })
 
+def showpage(request, title):
+    pagecontent = util.get_entry(title)
+    return render(request, "encyclopedia/showpage.html", {
+        "title": title,
+        "pagecontent":pagecontent
+    })
+
