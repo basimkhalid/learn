@@ -1,0 +1,29 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+<h1>Add New Entry</h1>
+    
+<form action="{% url 'encyclopedia:addpage' %}" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="row">
+       <div class="col-md-2">    
+        {{ field.label_tag }}
+        {% if field.help_text %}
+        {% endif %}
+        {{ field.errors }}
+       </div><div class="col-md-10 pull-left">
+         {{ field }}
+       </div>
+    </div>
+    {% endfor %}
+
+    <input type="submit" value="Submit">
+</form>
+
+
+{% endblock %}
