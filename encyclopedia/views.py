@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from markdown2 import Markdown
 
 from . import util
 
@@ -22,7 +23,7 @@ def addpage(request):
             title = form.cleaned_data["entrytitle"]
             content = form.cleaned_data["entrycontent"]
             util.save_entry(title, content)
-            return HttpResponseRedirect(reverse("encyclopedia:index"))
+            return HttpResponseRedirect(reverse("encyclopedia:showpage", kwargs={'title': title}))
         else:
             return render(request, "encyclopedia/addpage.html", {
                 "form":form
@@ -32,9 +33,23 @@ def addpage(request):
     })
 
 def showpage(request, title):
-    pagecontent = util.get_entry(title)
+    markdowner = Markdown()
+    rawpagecontent = util.get_entry(title)
+    if rawpagecontent is None:
+        rawpagecontent = "This entry Does not exist. [Add new Entry](/addpage)"
+    pagecontent = markdowner.convert(rawpagecontent)
     return render(request, "encyclopedia/showpage.html", {
         "title": title,
         "pagecontent":pagecontent
+    })
+
+def editpage(request, title):
+    rawpagecontent = util.get_entry(title)
+    form = NewEntryForm({
+        "entrytitle": title,
+        "entrycontent":rawpagecontent
+    })
+    return render(request, "encyclopedia/addpage.html", {
+        "form":form
     })
 

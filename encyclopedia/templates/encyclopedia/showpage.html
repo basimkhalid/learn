@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ title }}</h1>
 
-    <p>{{ pagecontent }}</p>
+    <p>{{ pagecontent|safe }}</p>
+
+    <form action="/edit/{{title}}" method="get">
+        <button type="submit">Edit this Page</button>
+    </form>
 
 {% endblock %}
