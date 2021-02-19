@@ -1,20 +1,18 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia - Add new entry
+    Encyclopedia - edit {{ title }}
 {% endblock %}
 
 {% block body %}
-<h1>Add New Entry</h1>
+<h1>Edit wiki - {{ title }}</h1>
     
-<form action="{% url 'encyclopedia:addpage' %}" method="post">
+<form action="{% url 'encyclopedia:editpage' title=title %}" method="post">
     {% csrf_token %}
     {% for field in form %}
     <div class="row">
        <div class="col-md-2">    
         {{ field.label_tag }}
-        {% if field.help_text %}
-        {% endif %}
         {{ field.errors }}
        </div><div class="col-md-10 pull-left">
          {{ field }}

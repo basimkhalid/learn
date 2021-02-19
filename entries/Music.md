@@ -1,3 +1,3 @@
 # Music
 
-The thing which keeps people *sane*
+That awesome thing which keeps people **sane**

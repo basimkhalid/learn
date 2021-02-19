@@ -3,6 +3,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from markdown2 import Markdown
+import random
 
 from . import util
 
@@ -16,12 +17,20 @@ class NewEntryForm(forms.Form):
     entrytitle = forms.CharField(label="Title")
     entrycontent = forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}), label="Content")
 
+class EditEntryForm(forms.Form):
+    entrycontent = forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":20}), label="Content")
+
 def addpage(request):
     if request.method == "POST":
         form = NewEntryForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data["entrytitle"]
             content = form.cleaned_data["entrycontent"]
+            rawpagecontent = util.get_entry(title)
+            if rawpagecontent is not None:
+                return render(request, "encyclopedia/pageexists.html", {
+                "title":title
+                })
             util.save_entry(title, content)
             return HttpResponseRedirect(reverse("encyclopedia:showpage", kwargs={'title': title}))
         else:
@@ -44,12 +53,34 @@ def showpage(request, title):
     })
 
 def editpage(request, title):
-    rawpagecontent = util.get_entry(title)
-    form = NewEntryForm({
-        "entrytitle": title,
-        "entrycontent":rawpagecontent
-    })
-    return render(request, "encyclopedia/addpage.html", {
-        "form":form
-    })
+    if request.method == "POST":
+        form = EditEntryForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data["entrycontent"]
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse("encyclopedia:showpage", kwargs={'title': title}))
+        else:
+            return render(request, "encyclopedia/editpage.html", {
+                "form":form,
+                "title":title
+            })
+    else:
+        rawpagecontent = util.get_entry(title)
+        form = EditEntryForm({
+            "entrycontent":rawpagecontent
+        })
+        return render(request, "encyclopedia/editpage.html", {
+            "form":form,
+            "title":title
+        })
 
+def randompage(request):
+    entries = util.list_entries()
+    title = random.choice(entries)
+    markdowner = Markdown()
+    rawpagecontent = util.get_entry(title)
+    pagecontent = markdowner.convert(rawpagecontent)
+    return render(request, "encyclopedia/showpage.html", {
+        "title": title,
+        "pagecontent":pagecontent
+    })
