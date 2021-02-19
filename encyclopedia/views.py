@@ -3,12 +3,32 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from markdown2 import Markdown
+from django.shortcuts import redirect
 import random
 
 from . import util
 
 
 def index(request):
+    if request.method == "POST":
+        query = request.POST.get('q')
+        entrylist = util.list_entries()
+        ##Refresh Home if search is empty
+        if not query:
+            return render(request, "encyclopedia/index.html", {
+                "entries": util.list_entries()
+                })
+        else:
+            ##Check for exact match
+            for entry in entrylist:
+                if query.lower() == entry.lower():
+                    return redirect('encyclopedia:showpage', query)
+            ## for partial match
+            searchresults = [s for s in map(str.lower, entrylist) if query.lower() in s]
+            print(searchresults)
+            return render(request, "encyclopedia/index.html", {
+                "entries": searchresults
+            })
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
     })
