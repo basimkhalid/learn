@@ -7,9 +7,10 @@
 {% block body %}
 
     <p>{{ pagecontent|safe }}</p>
-
+    {% if "This entry Does not exist" not in pagecontent %}
     <form action="{% url 'encyclopedia:editpage' title=title %}" method="get">
         <button type="submit">Edit this Page</button>
     </form>
+    {% endif %}
 
 {% endblock %}
