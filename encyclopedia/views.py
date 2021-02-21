@@ -70,8 +70,11 @@ def addpage(request):
 
 def showpage(request, title):
     markdowner = Markdown()
-    if not title.isupper():
-        title = title.capitalize()
+    entrylist = util.list_entries()
+    for entry in entrylist:
+        if title.lower() == entry.lower():
+            title = entry
+    print(title)
     rawpagecontent = util.get_entry(title)
     if rawpagecontent is None:
         rawpagecontent = "This entry Does not exist. [Add new Entry](/addpage)"
