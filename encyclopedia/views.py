@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from markdown2 import Markdown
 from django.shortcuts import redirect
 import random
+import re
 
 from . import util
 
@@ -22,9 +23,13 @@ def index(request):
             ##Check for exact match
             for entry in entrylist:
                 if query.lower() == entry.lower():
-                    return redirect('encyclopedia:showpage', query)
+                    return redirect('encyclopedia:showpage', entry)
             ## for partial match
-            searchresults = [s for s in map(str.lower, entrylist) if query.lower() in s]
+            ##searchresults = [s for s in map(str.lower, entrylist) if query.lower() in s]
+            searchresults = []
+            for entry in entrylist:
+                if re.search(query, entry, re.IGNORECASE):
+                    searchresults.append(entry)
             print(searchresults)
             return render(request, "encyclopedia/index.html", {
                 "entries": searchresults
@@ -51,6 +56,8 @@ def addpage(request):
                 return render(request, "encyclopedia/pageexists.html", {
                 "title":title
                 })
+            if not title.isupper():
+                title = title.capitalize()
             util.save_entry(title, content)
             return HttpResponseRedirect(reverse("encyclopedia:showpage", kwargs={'title': title}))
         else:
@@ -63,6 +70,8 @@ def addpage(request):
 
 def showpage(request, title):
     markdowner = Markdown()
+    if not title.isupper():
+        title = title.capitalize()
     rawpagecontent = util.get_entry(title)
     if rawpagecontent is None:
         rawpagecontent = "This entry Does not exist. [Add new Entry](/addpage)"
