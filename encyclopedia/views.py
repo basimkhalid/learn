@@ -59,8 +59,6 @@ def addpage(request):
                 return render(request, "encyclopedia/pageexists.html", {
                 "title":title
                 })
-            if not title.isupper():
-                title = title.capitalize()
             util.save_entry(title, content)
             return HttpResponseRedirect(reverse("encyclopedia:showpage", kwargs={'title': title}))
         else:
