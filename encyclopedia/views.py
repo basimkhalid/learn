@@ -17,7 +17,8 @@ def index(request):
         ##Refresh Home if search is empty
         if not query:
             return render(request, "encyclopedia/index.html", {
-                "entries": util.list_entries()
+                "entries": util.list_entries(),
+                "heading": "All Pages"
                 })
         else:
             ##Check for exact match
@@ -32,10 +33,12 @@ def index(request):
                     searchresults.append(entry)
             print(searchresults)
             return render(request, "encyclopedia/index.html", {
-                "entries": searchresults
+                "entries": searchresults,
+                "heading": "Search Results"
             })
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "heading": "All Pages"
     })
 
 class NewEntryForm(forms.Form):
