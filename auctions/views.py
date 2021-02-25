@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import *
+from django.contrib.auth.decorators import login_required
 
 from .models import User
 
@@ -81,5 +82,31 @@ def listingview(request, listing_id):
         "comments" : comments
     })
 
+@login_required(redirect_field_name='next', login_url='/login')
 def newbid(request, listing_id):
+    if request.method == "POST" and request.POST["newbidamount"]:
+        listing = Listing.objects.get(pk=listing_id)
+        bidamount = float(request.POST["newbidamount"])
+        try:
+            maxbid = listing.listing_bids.order_by('-bidamount')[0]
+        except:
+            maxbid = Bid(listing=listing, biduser=request.user, bidamount=0)
+        if bidamount > float(maxbid.bidamount):
+            newbid = Bid(listing=listing, bidamount=bidamount, biduser=request.user)
+            newbid.save()
+
+            bid_msg = "Your Bid is placed" 
+            return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+
+        else:
+            bid_msg = "Bid amount should be higher than the current highest amount"
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "maxbid" : maxbid,
+                "bid_msg" : bid_msg
+            })
+    return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+
+@login_required(redirect_field_name='next', login_url='/login')
+def closebid(request, listing_id):
     pass

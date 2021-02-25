@@ -7,7 +7,17 @@
 </div>
 <div class="detailcontainer">
     <div class="bidcontainer">
-        <h3>Bids</h3>
+        <div class="topbar">
+            <div>
+                <h3>Bids</h3>
+            </div>
+            {% if  listing.author == request.user %}
+            <div>
+                <a class="btn btn-warning" href="{% url 'auctions:closebid' listing.id %}"><strong>Close Bid</strong></a>
+            </div>
+            {% endif %}
+        </div>
+        
         <p><strong>Initial Price: USD {{ listing.initialprice }}</strong></p>
         {% ifnotequal maxbid None %}
             <p> Highest Bidder: {{ maxbid.biduser }}</p>
@@ -19,13 +29,18 @@
         {% if user.is_authenticated %}
 
             {% if listing.bidinprogress %}
-                <div >
-                    <form class="bidform" action="{% url 'auctions:newbid' listing.id %}" method="post">
-                        {% csrf_token %}
-                        <input class="form-control" type="number" min="1" step="any" name="newbidamount" placeholder="New Bid amount">
-                        <input class="btn btn-primary" type="Submit" value="Add Bid">
-                    </form>
-                </div>
+                {% if  listing.author != request.user %}
+                    <div >
+                        {% if bid_msg is not None %}
+                            <p>{{ bid_msg }}</p>
+                        {% endif %}
+                        <form class="bidform" action="{% url 'auctions:newbid' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="number" min="1" step="any" name="newbidamount" placeholder="New Bid amount">
+                            <input class="btn btn-primary" type="Submit" value="Add Bid">
+                        </form>
+                    </div>
+                {% endif %}
             {% else %}
                 <p><strong>This bid is won by: {{ maxbid.biduser }}</strong></p>
             {% endif %}
