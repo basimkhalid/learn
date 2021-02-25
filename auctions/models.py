@@ -19,6 +19,7 @@ class Listing(models.Model):
     listdate = DateTimeField(auto_now=True, auto_now_add=False)
     initialprice = models.DecimalField(max_digits=10, decimal_places=2, default=00.00)
     bidinprogress = models.BooleanField(default=True)
+    winner = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="bids_won")
 
     def __str__(self):
         return f"Listing: {self.title} by {self.author}"

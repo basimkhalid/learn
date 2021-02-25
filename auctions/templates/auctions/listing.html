@@ -11,9 +11,12 @@
             <div>
                 <h3>Bids</h3>
             </div>
-            {% if  listing.author == request.user %}
+            {% if  listing.author == request.user and listing.bidinprogress %}
             <div>
-                <a class="btn btn-warning" href="{% url 'auctions:closebid' listing.id %}"><strong>Close Bid</strong></a>
+                <form action="{% url 'auctions:closebid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input class="btn btn-warning" type="submit" value="Close Bid">
+                </form>
             </div>
             {% endif %}
         </div>
@@ -42,19 +45,30 @@
                     </div>
                 {% endif %}
             {% else %}
-                <p><strong>This bid is won by: {{ maxbid.biduser }}</strong></p>
+                <p><strong>This bid is won by: {{ listing.winner }}</strong></p>
             {% endif %}
         {% endif %}
 
         <div class="commentsbox">
-            {% if not comments %}
-                <p> There are no comments on this Listing</p>
-            {% else %}
-                <h4>Comments</h4>
-                {% for c in comments %}
-                    <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
-                {% endfor %}
-            {% endif %}
+            <div class="topbar">
+                <div>
+                    <h4>Comments</h4>
+                </div>
+                {% if listing.bidinprogress and user.is_authenticated %}
+                <div>
+                    <a class="btn btn-secondary" href="{% url 'auctions:addcomment' listing.id %}"><strong>+</strong></a>
+                </div>
+                {% endif %}
+            </div>
+            <div>
+                {% if not comments %}
+                    <p> There are no comments on this Listing</p>
+                {% else %} 
+                    {% for c in comments %}
+                        <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
         
     </div>

@@ -109,4 +109,26 @@ def newbid(request, listing_id):
 
 @login_required(redirect_field_name='next', login_url='/login')
 def closebid(request, listing_id):
-    pass
+    if request.method == "POST":
+        listing = Listing.objects.get(pk=listing_id)
+        try:
+            maxbid = listing.listing_bids.order_by('-bidamount')[0]
+        except:
+            maxbid = Bid(listing=listing, biduser=request.user, bidamount=listing.initialprice)
+        listing.bidinprogress = False
+        listing.winner = maxbid.biduser
+        listing.save()
+        return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+
+@login_required(redirect_field_name='next', login_url='/login')
+def addcomment(request, listing_id):
+    listing = Listing.objects.get(pk=listing_id)
+    if request.method == "POST":
+        commenttext = str(request.POST["commenttext"])
+        if commenttext:
+            newcomment = Comment(listing=listing, commentuser=request.user, comment=commenttext)
+            newcomment.save()
+            return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+    return render(request, "auctions/addcomment.html", {
+        "listing": listing
+    })

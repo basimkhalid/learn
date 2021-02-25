@@ -132,6 +132,19 @@ img {
     margin-top: 10px;
 }
 
+.commentblock {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    max-width: 90vh;
+}
+
+.commentbtn {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
 
 @media screen and (max-width: 800px) {
     .listingdiv {
