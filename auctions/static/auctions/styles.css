@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-style: bold;
+    padding: 10px;
+    background-color: white;
+}
+
+.topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+}
+
+.listingdiv {
+    margin-top: 10px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows:auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    align-items: center;
+    align-content: left;
+}
+
+.listingitem {
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    height: 20vh;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 5px;
+    
+}
+
+.nav {
+    background-color: rgb(31, 57, 58);
+    border-radius: 3px;
+}
+
+.nav a {
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.listingimage {
+    text-align:center;
+    display: inline-block; 
+    position: relative;
+}
+
+.imagediv {
+    display:inline;
+}
+
+.image {
+    height: 10em;
+}
+
+.detailcontainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows:auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.listcontainer, .bidcontainer {
+    padding: 10px;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .listingdiv {
+        margin-top: 10px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        align-items: center;
+    }
+    .desc {
+        display: none;
+    }
+    .detailcontainer {
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+  }
+
+  

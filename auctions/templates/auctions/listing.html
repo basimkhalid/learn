@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="headcontainer bidcontainer">
+    <h3><strong>Title:</strong>  {{ listing.title }}</h3>
+    posted by: {{ listing.author }}
+</div>
+<div class="detailcontainer">
+    <div class="bidcontainer">
+        <h3>Bids</h3>
+        <p><strong>Initial Price: USD {{ listing.initialprice }}</strong></p>
+        {% ifnotequal maxbid None %}
+            <p> Highest Bidder: {{ maxbid.biduser }}</p>
+            <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>
+        {% else %}
+            <p> There are no bids on this Listing</p>
+        {% endifnotequal %}
+
+        {% if listing.bidinprogress %}
+            <div class="bidform">
+                <form action="{% url 'auctions:newbid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="number" min="1" step="any" name="newbidamount" placeholder="New Bid amount">
+                    <input type="Submit" value="Add Bid">
+                </form>
+            </div>
+        {% else %}
+            <p><strong>This bid is won by: {{ maxbid.biduser }}</strong></p>
+        {% endif %}
+
+        {% if not comments %}
+            <p> There are no comments on this Listing</p>
+        {% else %}
+            <h4>Comments</h4>
+            {% for c in comments %}
+                <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="listcontainer">
+        <div class="listingdesc">
+            <h4>Description</h4>
+            <p>{{ listing.description }}</p>
+        </div>
+        <div class="listimage">
+            <img src="{{ listing.imageurl }}" alt="Image not available">
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
