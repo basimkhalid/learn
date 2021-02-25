@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width">
         <title>{% block title %}Auctions{% endblock %}</title>
         <link href="{% static 'auctions/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
@@ -10,7 +11,7 @@
     <body>
         <div class="topbar">
             <div>
-                <h1>Auctions</h1>
+                <h1>AUCTIONS</h1>
             </div>
             <div>
                 {% if user.is_authenticated %}

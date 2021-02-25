@@ -28,6 +28,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     align-items: center;
     align-content: left;
+    border-radius: 3px;
 }
 
 .listingitem {
@@ -72,6 +73,7 @@ a {
     grid-template-columns: 50% 50%;
     grid-template-rows:auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
 }
 
 .listcontainer, .bidcontainer {
@@ -82,8 +84,56 @@ img {
     max-width: 100%;
 }
 
+.bidform {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
-@media screen and (max-width: 768px) {
+}
+
+.bidform input {
+    margin: 10px;
+}
+
+.btn-primary {
+    width: 100%;
+    max-width: 120px;
+}
+
+.commentsbox {
+    padding: 10px;
+    margin: 20px;
+    border: 2px solid grey;
+    border-radius: 3px;
+}
+
+.loginparent {
+    
+    text-align: center;
+}
+
+.loginblock {
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    max-width: 600px;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 3px;
+}
+
+.loginblock .form-control {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+
+.loginblock div {
+    margin-top: 10px;
+}
+
+
+@media screen and (max-width: 800px) {
     .listingdiv {
         margin-top: 10px;
         background-color: white;
