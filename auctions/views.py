@@ -91,7 +91,7 @@ def newbid(request, listing_id):
             maxbid = listing.listing_bids.order_by('-bidamount')[0]
         except:
             maxbid = Bid(listing=listing, biduser=request.user, bidamount=0)
-        if bidamount > float(maxbid.bidamount):
+        if bidamount > float(maxbid.bidamount) and bidamount > listing.initialprice:
             newbid = Bid(listing=listing, bidamount=bidamount, biduser=request.user)
             newbid.save()
 

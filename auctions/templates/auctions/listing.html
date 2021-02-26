@@ -23,7 +23,9 @@
         
         <p><strong>Initial Price: USD {{ listing.initialprice }}</strong></p>
         {% ifnotequal maxbid None %}
-            <p> Highest Bidder: {{ maxbid.biduser }}</p>
+            {% if maxbid.biduser == request.user %}
+                <p> You have made the highest bid currently</p>
+            {% endif %}
             <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>
         {% else %}
             <p> There are no bids on this Listing</p>
@@ -45,33 +47,15 @@
                     </div>
                 {% endif %}
             {% else %}
-                <p><strong>This bid is won by: {{ listing.winner }}</strong></p>
+                {% if maxbid.biduser == request.user %}
+                    <p><strong>Congratulations!! You have won this item</strong></p>
+                {% else %}
+                    <p><strong>Bidding is closed for this item</strong></p>
+                {% endif %}
             {% endif %}
-        {% endif %}
-
-        <div class="commentsbox">
-            <div class="topbar">
-                <div>
-                    <h4>Comments</h4>
-                </div>
-                {% if listing.bidinprogress and user.is_authenticated %}
-                <div>
-                    <a class="btn btn-secondary" href="{% url 'auctions:addcomment' listing.id %}"><strong>+</strong></a>
-                </div>
-                {% endif %}
-            </div>
-            <div>
-                {% if not comments %}
-                    <p> There are no comments on this Listing</p>
-                {% else %} 
-                    {% for c in comments %}
-                        <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-        
+        {% endif %}        
     </div>
+
     <div class="listcontainer">
         <div class="listingdesc">
             <h4>Description</h4>
@@ -79,6 +63,28 @@
         </div>
         <div class="listimage">
             <img src="{{ listing.imageurl }}" alt="Image not available">
+        </div>
+    </div>
+
+    <div class="commentsbox">
+        <div class="topbar">
+            <div>
+                <h4>Comments</h4>
+            </div>
+            {% if listing.bidinprogress and user.is_authenticated %}
+            <div>
+                <a class="btn btn-secondary" href="{% url 'auctions:addcomment' listing.id %}"><strong>+</strong></a>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if not comments %}
+                <p> There are no comments on this Listing</p>
+            {% else %} 
+                {% for c in comments %}
+                    <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     
