@@ -12,25 +12,47 @@
             <div>
                 <h3>Bids</h3>
             </div>
-            {% if  listing.author == request.user and listing.bidinprogress %}
-            <div>
-                <form action="{% url 'auctions:closebid' listing.id %}" method="post">
-                    {% csrf_token %}
-                    <input class="btn btn-warning" type="submit" value="Close Bid">
-                </form>
-            </div>
+            {% if listing.bidinprogress %}
+                {% if  listing.author == request.user %}
+                <div>
+                    <form action="{% url 'auctions:closebid' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-warning" type="submit" value="Close Bid">
+                    </form>
+                </div>
+                {% else %}
+                    {% if user.is_authenticated %}
+                        {% if watching %}
+                        <div>
+                            <form action="{% url 'auctions:switchwatchlist' listing.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-secondary" type="submit" value="Stop Watching">
+                            </form>
+                        </div>
+                        {% else %}
+                        <div>
+                            <form action="{% url 'auctions:switchwatchlist' listing.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-secondary" type="submit" value="Add to Watchlist">
+                            </form>
+                        </div>
+                        {% endif %}
+                    {% endif %}    
+                {% endif %}
             {% endif %}
         </div>
         
         <p><strong>Initial Price: USD {{ listing.initialprice }}</strong></p>
-        {% ifnotequal maxbid None %}
-            {% if maxbid.biduser == request.user %}
-                <p> You have made the highest bid currently</p>
-            {% endif %}
-            <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>
-        {% else %}
+        {% if not maxbid %}
             <p> There are no bids on this Listing</p>
-        {% endifnotequal %}
+        {% else %}
+            {% if not source_error %}
+                {% if maxbid.biduser == request.user %}
+                    <p> You have made the highest bid currently</p>
+                {% endif %}
+                <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>
+            {% endif %}       
+        {% endif %}
 
         {% if user.is_authenticated %}
 
@@ -43,7 +65,7 @@
                         <form class="bidform" action="{% url 'auctions:newbid' listing.id %}" method="post">
                             {% csrf_token %}
                             <input class="form-control" type="number" min="1" step="any" name="newbidamount" placeholder="New Bid amount">
-                            <input class="btn btn-primary" type="Submit" value="Add Bid">
+                            <input class="btn btn-primary" type="Submit" value="Place Bid">
                         </form>
                     </div>
                 {% endif %}
@@ -52,6 +74,9 @@
                     <p><strong>Congratulations!! You have won this item</strong></p>
                 {% else %}
                     <p><strong>Bidding is closed for this item</strong></p>
+                    {% if listing.author == request.user %} 
+                        <p><strong>Winner: {{ listing.winner }}</strong></p>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         {% endif %}        

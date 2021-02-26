@@ -26,12 +26,19 @@ class Listing(models.Model):
     initialprice = models.DecimalField(max_digits=10, decimal_places=2, default=00.00)
     bidinprogress = models.BooleanField(default=True)
     winner = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="bids_won")
-    watchuser = models.ManyToManyField(User, blank=True, related_name="watchlist")
     catagory = models.ForeignKey(Catagory, blank=True, null=True, on_delete=models.CASCADE, related_name="listings")
+    currentprice = models.DecimalField(max_digits=10, decimal_places=2, default=None, blank=True, null=True)
 
     def __str__(self):
         return f"Listing: {self.title} by {self.author}"
     
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="users")
+    listing = models.ForeignKey(Listing, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="watchlistings")
+
+    def __str__(self):
+        return f"{self.User} watching {self.Listing}"
+
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_bids")
     bidamount = models.DecimalField(max_digits=10, decimal_places=2)

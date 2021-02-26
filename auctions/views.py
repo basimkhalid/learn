@@ -5,15 +5,19 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import *
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Max
 from .models import User
 
 
 def index(request):
+    listings = Listing.objects.all().order_by('-listdate')
+    current_prices = []
+    for listing in listings:
+        maxbids = Bid.objects.values('listing').annotate(currprice=Max('bidamount'))
     return render(request, "auctions/index.html", {
-        "all_listings": Listing.objects.all().order_by('-listdate')
+        "all_listings": listings,
+        "maxbids" : maxbids
     })
-
 
 def login_view(request):
     if request.method == "POST":
@@ -21,12 +25,16 @@ def login_view(request):
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
+        valuenext= request.POST["next"]
         user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("auctions:index"))
+            if valuenext == "undefined":
+                return HttpResponseRedirect(reverse("auctions:index"))
+            else:
+                return HttpResponseRedirect(valuenext)
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
@@ -69,6 +77,13 @@ def register(request):
 def listingview(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     try:
+        if Watchlist.objects.filter(user=request.user,listing=listing).exists():
+            watching = True
+        else:
+            watching = False
+    except:
+        watching = False
+    try:
         maxbid = listing.listing_bids.order_by('-bidamount')[0]
     except:
         maxbid = None
@@ -79,7 +94,8 @@ def listingview(request, listing_id):
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "maxbid" : maxbid,
-        "comments" : comments
+        "comments" : comments,
+        "watching" : watching
     })
 
 @login_required(redirect_field_name='next', login_url='/login')
@@ -94,7 +110,8 @@ def newbid(request, listing_id):
         if bidamount > float(maxbid.bidamount) and bidamount > listing.initialprice:
             newbid = Bid(listing=listing, bidamount=bidamount, biduser=request.user)
             newbid.save()
-
+            listing.currentprice = bidamount
+            listing.save()
             bid_msg = "Your Bid is placed" 
             return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 
@@ -103,7 +120,8 @@ def newbid(request, listing_id):
             return render(request, "auctions/listing.html", {
                 "listing": listing,
                 "maxbid" : maxbid,
-                "bid_msg" : bid_msg
+                "bid_msg" : bid_msg,
+                "source_error" : True
             })
     return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
 
@@ -152,4 +170,49 @@ def addlisting(request):
         return HttpResponseRedirect(reverse("auctions:index"))
     return render(request, "auctions/addlisting.html", {
         "catagories": catagories
+    })
+
+@login_required(redirect_field_name='next', login_url='/login')
+def switchwatchlist(request, listing_id):
+    listing = Listing.objects.get(pk=listing_id)
+    if Watchlist.objects.filter(user=request.user, listing=listing).exists():
+        Watchlist.objects.filter(user=request.user, listing=listing).delete()
+    else:
+        watchlist = Watchlist(user=request.user, listing=listing)
+        watchlist.save()
+    return HttpResponseRedirect(reverse("auctions:listing", args=(listing_id,)))
+
+@login_required(redirect_field_name='next', login_url='/login')
+def mywatchlist(request):
+    watchlists = Watchlist.objects.filter(user=request.user).values_list('listing', flat=True)
+    listings = Listing.objects.filter(pk__in=watchlists).all()
+    return render(request, "auctions/watchlist.html", {
+        "all_listings": listings
+    })
+
+@login_required(redirect_field_name='next', login_url='/login')
+def mylistings(request):
+    return render(request, "auctions/index.html", {
+        "all_listings": Listing.objects.filter(author=request.user).order_by('-listdate'),
+        "sourcenotindex" : True
+    })
+
+def catagories(request):
+    catagories = Catagory.objects.all()
+    otherscount = Listing.objects.filter(catagory=None).count
+    return render (request, "auctions/catagories.html", {
+        "catagories" : catagories,
+        "otherscount" : otherscount
+    })
+
+def catlist(request, catagory_id):
+    if catagory_id == 0:
+        return render(request, "auctions/index.html", {
+        "all_listings": Listing.objects.filter(catagory=None).order_by('-listdate'),
+        "sourcenotindex" : True
+    })
+    catagory = Catagory.objects.get(pk=catagory_id)
+    return render(request, "auctions/index.html", {
+        "all_listings": Listing.objects.filter(catagory=catagory).order_by('-listdate'),
+        "sourcenotindex" : True
     })

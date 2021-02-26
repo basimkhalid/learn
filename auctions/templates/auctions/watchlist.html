@@ -2,15 +2,14 @@
 
 {% block body %}
         <div>
-            <h2>Active Listings</h2>
+            <h2>My WatchList</h2>
         </div>
     {% for listing in all_listings %}
-        {% if listing.bidinprogress or sourcenotindex %}
             <div class="listingdiv">
                 <div class="listingitem">
                     <h3><a href="{% url 'auctions:listing' listing_id=listing.id %}">{{ listing.title }}</a></h3>
                     created by: {{ listing.author }}
-                    <p>Starting Price: {{ listing.initialprice }}</p>
+                    <p>starting price: {{ listing.initialprice }}</p>
                     <p>Current Price: {{ listing.currentprice }}</p>
                 </div>
                 <div class="listingitem desc">
@@ -29,7 +28,6 @@
                     
                 </div>
             </div>
-        {% endif %}
     {% empty %}
         <p>There are no listings to display</p>
     {% endfor %}

@@ -12,6 +12,7 @@
 
         <form action="{% url 'auctions:login' %}" method="post">
             {% csrf_token %}
+            <input type="hidden" name="next" id="redirectto" value=""/>
             <div class="form-group">
                 <input autofocus class="form-control" type="text" name="username" placeholder="Username">
             </div>
@@ -23,7 +24,11 @@
         <div>
             Don't have an account? <a href="{% url 'auctions:register' %}">Register here.</a>
         </div>
-        
+        <script type="text/javascript">
+            var query = window.location.search.substring(1);
+            var Field=query.split("=");
+            document.getElementById("redirectto").value = Field[1];
+        </script>
     </div>
 </div>
 {% endblock %}
