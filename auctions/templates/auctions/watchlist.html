@@ -9,8 +9,11 @@
                 <div class="listingitem">
                     <h3><a href="{% url 'auctions:listing' listing_id=listing.id %}">{{ listing.title }}</a></h3>
                     created by: {{ listing.author }}
-                    <p>starting price: {{ listing.initialprice }}</p>
-                    <p>Current Price: {{ listing.currentprice }}</p>
+                    {% if listing.currentprice == None %}
+                        <p>Current Price: {{ listing.initialprice }}</p>
+                    {% else %}
+                        <p>Current Price: {{ listing.currentprice }}</p>
+                    {% endif %}
                 </div>
                 <div class="listingitem desc">
                     <p><strong>Description: </strong>{{ listing.description }}</p>

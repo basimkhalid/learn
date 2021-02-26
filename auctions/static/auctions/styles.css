@@ -35,7 +35,7 @@ body {
     white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis; 
-    height: 25vh;
+    height: 22vh;
     padding: 5px 10px 5px 10px;
     margin-bottom: 5px;  
 }
