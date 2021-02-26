@@ -1,7 +1,9 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+        <div>
+            <h2>Active Listings</h2>
+        </div>
     {% for listing in all_listings %}
         {% if listing.bidinprogress %}
             <div class="listingdiv">

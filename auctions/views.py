@@ -132,3 +132,24 @@ def addcomment(request, listing_id):
     return render(request, "auctions/addcomment.html", {
         "listing": listing
     })
+
+@login_required(redirect_field_name='next', login_url='/login')
+def addlisting(request):
+    catagories = Catagory.objects.all()
+    if request.method == "POST":
+        catagory_id = request.POST["catagory"]
+        if catagory_id == "---":
+            catagory = None
+        else:
+            catagory = Catagory.objects.get(pk=catagory_id)
+        newlisting = Listing(title=request.POST["title"],
+                            description = request.POST["description"],
+                            imageurl = request.POST["imageurl"],
+                            author = request.user,
+                            initialprice = float(request.POST["initialprice"]),
+                            catagory = catagory)
+        newlisting.save()
+        return HttpResponseRedirect(reverse("auctions:index"))
+    return render(request, "auctions/addlisting.html", {
+        "catagories": catagories
+    })

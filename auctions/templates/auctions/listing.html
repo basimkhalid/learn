@@ -3,7 +3,8 @@
 {% block body %}
 <div class="headcontainer bidcontainer">
     <h3><strong>Title:</strong>  {{ listing.title }}</h3>
-    posted by: {{ listing.author }}
+    <p>posted by: <strong>{{ listing.author }}</strong></p>
+    <p>Catagory: <strong>{{ listing.catagory.catagoryname }}</strong></p>
 </div>
 <div class="detailcontainer">
     <div class="bidcontainer">
@@ -56,6 +57,28 @@
         {% endif %}        
     </div>
 
+    <div class="commentsbox">
+        <div class="topbar">
+            <div>
+                <h4>Comments</h4>
+            </div>
+            {% if listing.bidinprogress and user.is_authenticated %}
+            <div>
+                <a class="btn btn-secondary" href="{% url 'auctions:addcomment' listing.id %}"><strong>+</strong></a>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if not comments %}
+                <p> There are no comments on this Listing</p>
+            {% else %} 
+                {% for c in comments %}
+                    <p>{{ c.commentdate }} : {{ c.commentuser }} says: <i>{{ c.comment }}</i></p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
     <div class="listcontainer">
         <div class="listingdesc">
             <h4>Description</h4>
@@ -66,7 +89,7 @@
         </div>
     </div>
 
-    <div class="commentsbox">
+    <div class="commentsbox-sm">
         <div class="topbar">
             <div>
                 <h4>Comments</h4>

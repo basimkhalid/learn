@@ -11,6 +11,12 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
+class Catagory(models.Model):
+    catagoryname = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"{self.catagoryname}"
+
 class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=4000)
@@ -20,6 +26,8 @@ class Listing(models.Model):
     initialprice = models.DecimalField(max_digits=10, decimal_places=2, default=00.00)
     bidinprogress = models.BooleanField(default=True)
     winner = models.ForeignKey(User, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="bids_won")
+    watchuser = models.ManyToManyField(User, blank=True, related_name="watchlist")
+    catagory = models.ForeignKey(Catagory, blank=True, null=True, on_delete=models.CASCADE, related_name="listings")
 
     def __str__(self):
         return f"Listing: {self.title} by {self.author}"

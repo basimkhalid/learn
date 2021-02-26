@@ -37,8 +37,7 @@ body {
     text-overflow: ellipsis; 
     height: 20vh;
     padding: 5px 10px 5px 10px;
-    margin-bottom: 5px;
-    
+    margin-bottom: 5px;  
 }
 
 .nav {
@@ -71,16 +70,17 @@ a {
 .detailcontainer {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-template-rows:50% auto;
-    grid-template-areas: "bidcontainer listcontainer"
-                        "commentsbox listcontainer";
+    grid-template-rows: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
 }
 
+.commentsbox-sm {
+    display: none;
+}
+
 .listcontainer, .bidcontainer {
     padding: 10px;
-    border: 1px solid red;
 }
 
 img {
@@ -104,7 +104,7 @@ img {
     max-width: 120px;
 }
 
-.commentsbox {
+.commentsbox, .commentsbox-sm {
     padding: 10px;
     margin: 20px;
     border: 2px solid grey;
@@ -142,6 +142,10 @@ img {
     max-width: 90vh;
 }
 
+div {
+    margin-bottom: 10px;
+}
+
 .commentbtn {
     padding-top: 10px;
     display: flex;
@@ -158,6 +162,9 @@ img {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         align-items: center;
     }
+    .listingitem {
+        height: auto; 
+    }
     .desc {
         display: none;
     }
@@ -165,6 +172,12 @@ img {
         display: flex;
         flex-direction: column;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .commentsbox-sm {
+        display: block;
+    }
+    .detailcontainer .commentsbox {
+        display: none;
     }
   }
 

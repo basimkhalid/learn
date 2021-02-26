@@ -4,7 +4,7 @@ from .models import *
 # Register your models here.
 
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ("id","title","description","imageurl","author","listdate","initialprice","bidinprogress")
+    list_display = ("id","title","description","imageurl","author","listdate","initialprice","bidinprogress","winner","catagory")
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("id","listing","commentuser","comment","commentdate")
@@ -13,3 +13,4 @@ admin.site.register(User)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Bid)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Catagory)
