@@ -50,8 +50,8 @@
                 {% if maxbid.biduser == request.user %}
                     <p> You have made the highest bid currently</p>
                 {% endif %}
-                <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>
-            {% endif %}       
+            {% endif %}
+            <p> <strong>Highest Bid Amount: USD {{ maxbid.bidamount }}</strong></p>       
         {% endif %}
 
         {% if user.is_authenticated %}
