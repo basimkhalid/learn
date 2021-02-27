@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+
+$navbarcolor: #5d4954;
+$navtextcolor: rgb(204, 201, 201);
+
+.listingdiv {
+    margin-top: 10px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows:auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    align-items: center;
+    align-content: left;
+    border-radius: 3px;
+}
+
+.listingitem {
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    height: 22vh;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 5px;  
+}
+
+.listingimage {
+    text-align:center;
+    display: inline-block; 
+    position: relative;
+    .imagediv {
+        display:inline;
+    }
+}
+
+.image {
+    height: 10em;
+}
+
+.detailcontainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+}
+
+.commentsbox-sm {
+    display: none;
+}
+
+.listcontainer, .bidcontainer {
+    padding: 10px;
+}
+
+img {
+    max-width: 100%;
+}
+
+.bidform {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    input {
+        margin: 10px;
+    }
+
+}
+
+.btn-primary {
+    width: 100%;
+    max-width: 120px;
+}
+
+.commentsbox, .commentsbox-sm {
+    padding: 10px;
+    margin: 20px;
+    border: 2px solid grey;
+    border-radius: 3px;
+}
+
+.loginparent {
+    text-align: center;
+    margin-top:20px;
+    .loginblock {
+        width: 100%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        max-width: 600px;
+        display: inline-block;
+        padding: 20px;
+        border-radius: 3px;
+        div {
+            margin-top: 10px;
+        }
+    }
+}
+
+
+
+.loginblock .form-control {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.commentblock {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    max-width: 90vh;
+}
+
+.commentbtn {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+@media screen and (max-width: 800px) {
+    .listingdiv {
+        margin-top: 10px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        align-items: center;
+        .listingitem {
+            height: auto; 
+        }
+    }
+    
+    .desc {
+        display: none;
+    }
+    .detailcontainer {
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        .commentsbox {
+            display: none;
+        }
+    }
+    .commentsbox-sm {
+        display: block;
+    }
+  }
+
+  

@@ -71,7 +71,7 @@
                 {% endif %}
             {% else %}
                 {% if maxbid.biduser == request.user %}
-                    <p><strong>Congratulations!! You have won this item</strong></p>
+                    <p style="color:brown;"><strong>Congratulations!! You have won this item</strong></p>
                 {% else %}
                     <p><strong>Bidding is closed for this item</strong></p>
                     {% if listing.author == request.user %} 

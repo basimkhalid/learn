@@ -16,7 +16,8 @@ def index(request):
         maxbids = Bid.objects.values('listing').annotate(currprice=Max('bidamount'))
     return render(request, "auctions/index.html", {
         "all_listings": listings,
-        "maxbids" : maxbids
+        "maxbids" : maxbids,
+        "heading" : "All Active Listings"
     })
 
 def login_view(request):
@@ -194,7 +195,8 @@ def mywatchlist(request):
 def mylistings(request):
     return render(request, "auctions/index.html", {
         "all_listings": Listing.objects.filter(author=request.user).order_by('-listdate'),
-        "sourcenotindex" : True
+        "sourcenotindex" : True,
+        "heading" : "My Listings"
     })
 
 def catagories(request):
@@ -209,10 +211,13 @@ def catlist(request, catagory_id):
     if catagory_id == 0:
         return render(request, "auctions/index.html", {
         "all_listings": Listing.objects.filter(catagory=None).order_by('-listdate'),
-        "sourcenotindex" : True
+        "sourcenotindex" : True,
+        "heading" : "All Listings - Others"
     })
     catagory = Catagory.objects.get(pk=catagory_id)
+    catname = str(catagory.catagoryname)
     return render(request, "auctions/index.html", {
         "all_listings": Listing.objects.filter(catagory=catagory).order_by('-listdate'),
-        "sourcenotindex" : True
+        "sourcenotindex" : True,
+        "heading" : "All Listings - "+ catname
     })

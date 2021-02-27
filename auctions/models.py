@@ -37,7 +37,7 @@ class Watchlist(models.Model):
     listing = models.ForeignKey(Listing, default=None, blank=True, null=True, on_delete=models.CASCADE, related_name="watchlistings")
 
     def __str__(self):
-        return f"{self.User} watching {self.Listing}"
+        return f"{self.user} watching {self.listing}"
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_bids")
